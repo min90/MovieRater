@@ -4,6 +4,7 @@ from scipy import stats
 
 
 def linear_regression(x_values, y_values):
+    """Returns two coordinates for a linear regression line"""
     regression = stats.linregress(x_values, y_values)
 
     slope = regression[0]
@@ -19,6 +20,7 @@ def linear_regression(x_values, y_values):
 
 
 def scatter_with_regression_line(x_values, y_values, x_label, y_label):
+    """Creates a scatter chart with a linear regression line"""
     regression_line = linear_regression(x_values, y_values)
 
     plt.xlabel(x_label)
