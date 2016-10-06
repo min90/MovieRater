@@ -35,7 +35,6 @@ class DataAnalysisClass:
         # Get relationships
         directorAllActors = self.getDirectorAllActorsRelation(data)
 
-
         #Plot em
 
 
