@@ -2,7 +2,7 @@ import csv
 
 # Check for duplicates
 
-print "Search for duplicates in \"cleaned_data.csv\"..."
+print ("Search for duplicates in \"cleaned_data.csv\"...")
 
 directors = []
 actors1 = []

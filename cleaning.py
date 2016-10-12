@@ -2,7 +2,7 @@ import csv
 
 # Cleaning process
 
-print "Reading data... (from movie_metadata.csv)"
+print ("Reading data... (from movie_metadata.csv)")
 
 directors = [] # director = 1
 actors1 = [] # actor 1 = 10
@@ -16,7 +16,7 @@ duplicate_rows = 0
 final_rows = 0
 
 # reading dataset
-with open('movie_metadata.csv', 'r') as oldfile:
+with open('movie_metadata.csv', 'r', encoding="utf8") as oldfile:
     reader = csv.reader(oldfile)
     next(reader)
 
@@ -33,8 +33,8 @@ with open('movie_metadata.csv', 'r') as oldfile:
         actors3.append(row[14])
         ratings.append(float(row[25]))
 
-print "\tRows found : " + str(base_rows) + "."
-print "Searching for duplicate entries..."
+print ("\tRows found : " + str(base_rows) + ".")
+print ("Searching for duplicate entries...")
 
 # searching for duplicates
 for i in range(0, len(directors)):
@@ -44,8 +44,8 @@ for i in range(0, len(directors)):
             duplicate_rows += 1
             break
 
-print "\tDuplicates found : " + str(duplicate_rows) + "."
-print "Saving cleaned data... (into cleaned_data.csv)"
+print ("\tDuplicates found : " + str(duplicate_rows) + ".")
+print ("Saving cleaned data... (into cleaned_data.csv)")
 
 # writing cleaned data into new CSV
 with open('cleaned_data.csv', 'w') as newfile:
@@ -57,5 +57,5 @@ with open('cleaned_data.csv', 'w') as newfile:
             writer.writerow([directors[k], actors1[k], actors2[k], actors3[k], ratings[k]])
             final_rows += 1
 
-print "\tRows saved : " + str(final_rows) + "."
-print "Done."
+print ("\tRows saved : " + str(final_rows) + ".")
+print ("Done.")
