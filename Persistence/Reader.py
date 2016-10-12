@@ -32,19 +32,19 @@ class CSVReader:
 
         return directors, actors, data
 
-    # In the method below, the "array" is the list of directors or actors
-    # The method search for the given name in the array and get the position
+    # In the method below, the "list" is the array of directors or actors
+    # The method search for the given name in the list and get the position
     # Then it creates an array (length : directors or actors number) with zeros and a one at the right position
     @staticmethod
-    def getVector(array, name):
+    def getVector(list, name):
         vector = []
-        length = len(array)
-        position = array.index(name);
+        length = len(list)
+        position = list.index(name)
 
         for i in range(0, length):
             if i == position:
-                array.append(1)
+                vector.append(1)
             else:
-                array.append(0)
+                vector.append(0)
 
-        return array
+        return vector

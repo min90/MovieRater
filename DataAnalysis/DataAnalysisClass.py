@@ -119,9 +119,3 @@ class DataAnalysisClass:
         plt.title('The scores of a director and one actor')
         plt.scatter(X, Y)
         plt.show()
-
-
-
-
-
-

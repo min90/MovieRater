@@ -4,4 +4,5 @@ import DataAnalysis.DataAnalysisClass as da
 reader = rd.CSVReader
 analysis = da.DataAnalysisClass
 
-analysis.analyze(reader.read("../cleaned_data.csv"))
+directors, actors, data = reader.read("../cleaned_data.csv")
+analysis.analyze(directors, actors, data)
