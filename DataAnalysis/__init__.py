@@ -5,4 +5,3 @@ reader = rd.CSVReader
 analysis = da.DataAnalysisClass
 
 analysis.analyze(reader.read("../cleaned_data.csv"))
-
