@@ -23,6 +23,7 @@ class Knn:
                 return actor_id
             else:
                 continue
+        return -1
 
     def getting_director(self, director_name):
         for movie in self.data:
@@ -31,15 +32,18 @@ class Knn:
                 return director_id
             else:
                 continue
+        return -1
 
     # testing
     def test(self):
         print("directors : " + str(self.nb_directors))
         print("actors : " + str(self.nb_actors))
-        print(self.getVector(2, "actor"))
+        print(self.getVector(323, "actor"))
         print(self.data[0][6])
         print(self.getting_actor("Clint Eastwood"))
         print(self.getting_director("Clint Eastwood"))
+        print(type(self.getting_actor("Clint Eastwood")))
+        print(self.getVector(int(self.getting_actor("Clint Eastwood")), "actor"))
 
 knn = Knn()
 knn.test()
