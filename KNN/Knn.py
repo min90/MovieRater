@@ -1,3 +1,5 @@
+import random
+
 import Persistence.Reader as rd
 import numpy as np
 
@@ -34,6 +36,20 @@ class Knn:
                 continue
         return -1
 
+
+    def dividing_set(self, data, split):
+        training_set = []
+        test_set = []
+        for x in range(len(data) - 1):
+            for y in range(8):
+                print(data[x][y])
+            if random.random() < split:
+                training_set.append(data[x])
+            else:
+                test_set.append(data[x])
+        return training_set, test_set
+
+
     # testing
     def test(self):
         print("directors : " + str(self.nb_directors))
@@ -44,6 +60,9 @@ class Knn:
         print(self.getting_director("Clint Eastwood"))
         print(type(self.getting_actor("Clint Eastwood")))
         print(self.getVector(int(self.getting_actor("Clint Eastwood")), "actor"))
+        trainingSet, testSet = self.dividing_set(self.data, 0.67)
+        print(trainingSet)
+        print(testSet)
 
 knn = Knn()
 knn.test()

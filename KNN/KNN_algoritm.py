@@ -22,4 +22,3 @@ class KNN_algorithm:
         return neighbors
 
 
-    
