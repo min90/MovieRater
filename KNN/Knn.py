@@ -84,11 +84,18 @@ class Knn:
             neighbors.append(distances[x][0])
         return neighbors
 
+    def average_neighbors_imdb_rating(self, response):
+        ratings = 0
+        for attr in response:
+            ratings += float(attr[2])
+        return ratings / len(response)
+
     # testing
     def test(self):
 
         test_point = (self.getVector(13, "dir"), self.getVector(432, "actor"))
         print(self.getNeighbors(self.getData(self.data), test_point, 4))
+        print(self.average_neighbors_imdb_rating(self.getNeighbors(self.getData(self.data), test_point, 4)))
 
 knn = Knn()
 knn.test()
