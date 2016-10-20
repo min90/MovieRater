@@ -2,6 +2,7 @@ import Persistence.Reader as rd
 import numpy as np
 import math
 import operator
+import random
 
 class Knn:
 
@@ -35,6 +36,25 @@ class Knn:
             else:
                 continue
         return -1
+
+    def dividing_set(self, data, split):
+        training_set = []
+        test_set = []
+        for x in range(len(data) - 1):
+            for y in range(8):
+                print(data[x][y])
+            if random.random() < split:
+                training_set.append(data[x])
+            else:
+                test_set.append(data[x])
+        return training_set, test_set
+
+    def getAccurracy(self, test_set, predictions):
+        correct = 0
+        for x in range(len(test_set)):
+            if test_set[x][-1] == predictions[x]:
+                correct += 1
+        return (correct/float(len(test_set))) * 100.0
 
     def getData(self, data):
         realdata = []
