@@ -49,12 +49,14 @@ class Knn:
                 test_set.append(data[x])
         return training_set, test_set
 
-    def getAccurracy(self, test_set, predictions):
-        correct = 0
-        for x in range(len(test_set)):
-            if test_set[x][-1] == predictions[x]:
-                correct += 1
-        return (correct/float(len(test_set))) * 100.0
+    def getRangeAccuracy(self, test_point, predictions):
+        upper_limit = test_point + 0.5
+        lower_limit = test_point - 0.5
+        if upper_limit >= predictions > lower_limit:
+            return True
+        else:
+            return False
+
 
     def getData(self, data):
         realdata = []
@@ -94,8 +96,10 @@ class Knn:
     def test(self):
 
         test_point = (self.getVector(13, "dir"), self.getVector(432, "actor"))
-        print(self.getNeighbors(self.getData(self.data), test_point, 4))
-        print(self.average_neighbors_imdb_rating(self.getNeighbors(self.getData(self.data), test_point, 4)))
+        #print(self.getNeighbors(self.getData(self.data), test_point, 4))
+        #print(self.average_neighbors_imdb_rating(self.getNeighbors(self.getData(self.data), test_point, 4)))
+        r = range(0,11,1)
+        print(r)
 
 knn = Knn()
 knn.test()
