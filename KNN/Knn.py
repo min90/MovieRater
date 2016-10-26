@@ -23,34 +23,27 @@ class Knn:
                 test_set.append(data[x])
         return training_set, test_set
 
-    def getData(self, data):
-        realdata = []
-        for movie in self.data:
-            realdata.append((movie[0], movie[1], movie[8]))
-            realdata.append((movie[0], movie[2], movie[8]))
-            realdata.append((movie[0], movie[3], movie[8]))
-        return realdata
-
-    def getDistance(self, id1, id2):
-        return 1 if (id1 == id2) else 0
+    def getDistance(self, trainingSetPoint, pointToTest):
+        dir_distance = 1 if (trainingSetPoint[4] == pointToTest[4]) else 0
+        actor1_distance = 1 if (trainingSetPoint[5] == pointToTest[5]) else 0
+        actor2_distance = 1 if (trainingSetPoint[6] == pointToTest[6]) else 0
+        actor3_distance = 1 if (trainingSetPoint[7] == pointToTest[7]) else 0
+        return (dir_distance + actor1_distance + actor2_distance + actor3_distance)
 
     def getNeighbors(self, training_set, test_point, k):
         start = timeit.default_timer()
         distances = []
-        length = len(test_point) - 1
-        for x in range(len(training_set)):
 
-            dir_distance = self.euclideanDistance(self.getVector(self.getting_director(test_point[0]), "dir"), self.getVector(self.getting_director(training_set[x][0]), "dir"), length)
-            actor1_distance = self.euclideanDistance(self.getVector(self.getting_actor(test_point[1]), "actor"), self.getVector(self.getting_actor(training_set[x][1]), "actor"), length)
-            actor2_distance = self.euclideanDistance(self.getVector(self.getting_actor(test_point[2]), "actor"), self.getVector(self.getting_actor(training_set[x][2]), "actor"), length)
-            actor3_distance = self.euclideanDistance(self.getVector(self.getting_actor(test_point[3]), "actor"), self.getVector(self.getting_actor(training_set[x][3]), "actor"), length)
-            distance = dir_distance + actor1_distance + actor2_distance + actor3_distance
+        for x in range(len(training_set)):
+            distance = self.getDistance(training_set[x], test_point)
             distances.append((training_set[x], distance))
 
         distances.sort(key=operator.itemgetter(1))
         neighbors = []
+
         for x in range(k):
             neighbors.append(distances[x][0])
+        
         stop = timeit.default_timer()
         print("Get neighbours time: " + str(stop - start))
         return neighbors
