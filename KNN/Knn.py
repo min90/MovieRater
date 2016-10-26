@@ -1,10 +1,8 @@
 import Persistence.Reader as rd
-import numpy as np
-import math
+import matplotlib.pyplot as plt
 import operator
 import random
 import timeit
-from collections import Counter
 
 
 class Knn:
@@ -31,7 +29,6 @@ class Knn:
         return dir_distance + actor1_distance + actor2_distance + actor3_distance
 
     def getNeighbors(self, training_set, test_point, k):
-        start = timeit.default_timer()
         distances = []
 
         for x in range(len(training_set)):
@@ -44,8 +41,7 @@ class Knn:
         for x in range(k):
             neighbors.append(distances[x][0])
         
-        stop = timeit.default_timer()
-        print("Get neighbours time: " + str(stop - start))
+
         return neighbors
 
 
@@ -55,19 +51,48 @@ class Knn:
 
         for neighbor in neighbors:
             distance = self.getDistance(neighbor, point)
-
             sum_weighted_scores += (float(neighbor[8]) * distance)
             sum_distances += distance
+        if sum_distances != 0:
+            return sum_weighted_scores / sum_distances
+        else:
+            return sum_weighted_scores
 
-        return sum_weighted_scores / sum_distances
+
+    def getAccuracy(self, rating1, rating2):
+        if(rating1 < rating2):
+            return rating1 /rating2
+        else:
+            return rating2 / rating1
+
 
     # testing
     def test(self):
-        training_data, test_data = self.dividing_set(self.data, 0.67)
+        # training_data, test_data = self.dividing_set(self.data, 0.67)
+        k = 20
+        i = 5
+        # Loop for multiple k
+        x, y = [], []
+        for l in range(1, k):
+            total_accuracy = 0
+            for j in range(0, i):
+                training_data, test_data = self.dividing_set(self.data, 0.70)
+                accuracy = 0
+                for point in test_data:
+                    # print("Predicting point: " + point[0] + ", " + point[1] + ", " + point[2], ", " + point[3] + "...")
+                    avg_weighted_rating = self.average_neighbors_imdb_rating(self.getNeighbors(training_data, point, l), point)
+                    accuracy += self.getAccuracy(float(point[8]), avg_weighted_rating)
+                    # print("Predicted class = " + str(avg_weighted_rating) + "      actual = " + point[8] + "       accuracy = " + str(self.getAccuracy(float(point[8]), avg_weighted_rating)))
+                total_accuracy += accuracy/len(test_data)
+                print("Try number: "+ str(j+1) + " k = " + str(l) + ": average precision: " + str(accuracy/len(test_data)))
 
-        for point in test_data:
-            print("Predicting point: " + point[0] + ", " + point[1] + ", " + point[2], ", " + point[3] + "...")
-            print("Predicted class = " + str(self.average_neighbors_imdb_rating(self.getNeighbors(training_data, point, 3), point)) + "      actual = " + point[8])
+            x.append(l)
+            y.append(total_accuracy/i)
+
+        plt.plot(x, y)
+        plt.ylabel("Accuracy")
+        plt.xlabel("k")
+        plt.show()
 
 knn = Knn()
 knn.test()
