@@ -6,14 +6,20 @@ import random
 import timeit
 from collections import Counter
 
-
 class Knn:
 
+    # Constructor
     def __init__ (self):
         reader = rd.CSVReader
         self.data, self.nb_directors, self.nb_actors = reader.read("../cleaned_data.csv")
 
+    # We divide the dataset in training and test sets
     def dividing_set(self, data, split):
+        """
+        :param data: the whole dataset (cleaned)
+        :param split: float between 0 and 1, corresponds to the percentage of the training set
+        :return: the training and test sets
+        """
         training_set = []
         test_set = []
         for x in range(len(data) - 1):
@@ -23,14 +29,27 @@ class Knn:
                 test_set.append(data[x])
         return training_set, test_set
 
+    # Get the euclidian distance between two points
     def getDistance(self, trainingSetPoint, pointToTest):
-        dir_distance = 1 if (trainingSetPoint[4] == pointToTest[4]) else 0
-        actor1_distance = 1 if (trainingSetPoint[5] == pointToTest[5]) else 0
-        actor2_distance = 1 if (trainingSetPoint[6] == pointToTest[6]) else 0
-        actor3_distance = 1 if (trainingSetPoint[7] == pointToTest[7]) else 0
+        """
+        :param trainingSetPoint: point in the training set
+        :param pointToTest: point we want to compare with
+        :return: distance between the 2 points
+        """
+        dir_distance = 1 if (trainingSetPoint[4] != pointToTest[4]) else 0
+        actor1_distance = 1 if (trainingSetPoint[5] != pointToTest[5]) else 0
+        actor2_distance = 1 if (trainingSetPoint[6] != pointToTest[6]) else 0
+        actor3_distance = 1 if (trainingSetPoint[7] != pointToTest[7]) else 0
         return (dir_distance + actor1_distance + actor2_distance + actor3_distance)
 
+    # Get the point's neighbors
     def getNeighbors(self, training_set, test_point, k):
+        """
+        :param training_set: training set
+        :param test_point: point to get neighbors of
+        :param k: amount of neighbors to select
+        :return: k-nearest neighbors with their distance to the point
+        """
         start = timeit.default_timer()
         distances = []
 
@@ -43,7 +62,7 @@ class Knn:
 
         for x in range(k):
             neighbors.append(distances[x][0])
-        
+
         stop = timeit.default_timer()
         print("Get neighbours time: " + str(stop - start))
         return neighbors
