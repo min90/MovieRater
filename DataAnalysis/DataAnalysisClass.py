@@ -97,8 +97,7 @@ class DataAnalysisClass:
         return directorActor
 
     @staticmethod
-    def analyze(directors, actors, data):
-
+    def analyze(data):
         # Get relationships
         director_all_actors = DataAnalysisClass.getDirectorAllActorsRelation(data)
         director_actor = DataAnalysisClass.get_director_single_actor_relation(data)
