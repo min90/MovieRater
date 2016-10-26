@@ -24,11 +24,11 @@ class Knn:
         return training_set, test_set
 
     def getDistance(self, trainingSetPoint, pointToTest):
-        dir_distance = 1 if (trainingSetPoint[4] == pointToTest[4]) else 0
-        actor1_distance = 1 if (trainingSetPoint[5] == pointToTest[5]) else 0
-        actor2_distance = 1 if (trainingSetPoint[6] == pointToTest[6]) else 0
-        actor3_distance = 1 if (trainingSetPoint[7] == pointToTest[7]) else 0
-        return (dir_distance + actor1_distance + actor2_distance + actor3_distance)
+        dir_distance = 1 if (trainingSetPoint[4] != pointToTest[4]) else 0
+        actor1_distance = 1 if (trainingSetPoint[5] != pointToTest[5]) else 0
+        actor2_distance = 1 if (trainingSetPoint[6] != pointToTest[6]) else 0
+        actor3_distance = 1 if (trainingSetPoint[7] != pointToTest[7]) else 0
+        return dir_distance + actor1_distance + actor2_distance + actor3_distance
 
     def getNeighbors(self, training_set, test_point, k):
         start = timeit.default_timer()
@@ -48,12 +48,18 @@ class Knn:
         print("Get neighbours time: " + str(stop - start))
         return neighbors
 
-    # Not in use
-    def average_neighbors_imdb_rating(self, response):
-        ratings = 0
-        for attr in response:
-            ratings += float(attr[8])
-        return ratings / len(response)
+
+    def average_neighbors_imdb_rating(self, neighbors, point):
+        sum_distances = 0
+        sum_weighted_scores = 0
+
+        for neighbor in neighbors:
+            distance = self.getDistance(neighbor, point)
+
+            sum_weighted_scores += (float(neighbor[8]) * distance)
+            sum_distances += distance
+
+        return sum_weighted_scores / sum_distances
 
     # testing
     def test(self):
@@ -61,7 +67,7 @@ class Knn:
 
         for point in test_data:
             print("Predicting point: " + point[0] + ", " + point[1] + ", " + point[2], ", " + point[3] + "...")
-            print("Predicted class = " + str(self.getMajorityClass(self.getNeighbors(training_data, point, 3))) + "      actual = " + str(math.floor(float(point[8]))))
+            print("Predicted class = " + str(self.average_neighbors_imdb_rating(self.getNeighbors(training_data, point, 3), point)) + "      actual = " + point[8])
 
 knn = Knn()
 knn.test()
