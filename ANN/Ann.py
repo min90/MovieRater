@@ -1,6 +1,7 @@
 import Persistence.Reader as rd
 import matplotlib.pyplot as plt
 import numpy as np
+import sklearn as sk
 import random
 
 reader = rd.CSVReader
@@ -44,7 +45,7 @@ np.random.seed(1)
 # initialize weights randomly with mean 0
 syn0 = 2 * np.random.random((3, 1)) - 1
 
-for iter in xrange(10000):
+for iter in range(0, 10000):
     # forward propagation
     l0 = X
     l1 = nonlin(np.dot(l0, syn0))
@@ -59,7 +60,5 @@ for iter in xrange(10000):
     # update weights
     syn0 += np.dot(l0.T, l1_delta)
 
-print
-"Output After Training:"
-print
-l1
+print("Output After Training:")
+print(l1)
