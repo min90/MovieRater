@@ -4,13 +4,13 @@ from pip._vendor.distlib.compat import raw_input
 class movierater_input:
 
     def choose_algorithm(self):
-        algoritms = {1: "KNN", 2: "ANN", 3: "PCA"}
+        algoritms = {1: "KNN", 2: "ANN", 3: "PCA.py"}
         print("--------------------------")
         print("Welcome to the movie rater, where you can see into future and see upcoming movies imdb ratings!")
         print("First choose which algoritm, you would to like to predict with?")
         print("KNN - K-nearest neighbor enter 1")
         print("ANN - Artifical Neural Network enter 2")
-        print("PCA - Principal Component Analysis enter 3")
+        print("PCA.py - Principal Component Analysis enter 3")
         algorithm_chosen = self.algorithm_run()
         print("You chosed %s" % algoritms[algorithm_chosen])
 
