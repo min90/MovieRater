@@ -28,11 +28,11 @@ with open('cleaned_data.csv', 'r') as newfile:
         actors3.append(row[3])
         ratings.append(row[4])
     
-    print str(loop) + " loop turns."
+    print(str(loop) + " loop turns.")
     
     if nb == 0:
-        print "There is no duplicate entries."
+        print("There is no duplicate entries.")
     else:
-        print str(nb) + " duplicate entries."
+        print(str(nb) + " duplicate entries.")
     
-print "End."
+print("End.")
