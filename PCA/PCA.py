@@ -274,10 +274,9 @@ if performManualPCA == True:
     # ===============================================
     # Choosing k eigenvectors with the largest eigenvalues
 
-    matrix_w = np.hstack((eig_pairs[0][1].reshape(3,1), eig_pairs[1][1].reshape(3,1)))
-    print('Matrix W:\n', matrix_w)
+    #matrix_w = np.hstack((eig_pairs[0][1].reshape(5,1), eig_pairs[1][1].reshape(5,1)))
+    #print('Matrix W :\n', matrix_w)
 
     # Transforming the samples onto the new subspace
-
-    transformed = matrix_w.T.dot(all_samples)
-    assert transformed.shape == (2,40), "The matrix is not 2x40 dimensional."
+    #transformed = matrix_w.dot(Dataset)
+    #print(matrix_w.shape)
