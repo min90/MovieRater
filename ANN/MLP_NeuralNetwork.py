@@ -34,6 +34,7 @@ class MLP_NeuralNetwork(object):
         # Create randomized weights
         self.weights_input = np.random.randn(self.input, self.hidden)
         self.weights_output = np.random.randn(self.input, self.hidden)
+        print(str(len(self.weights_output)))
 
         # Create arrays of 0 for changes
 
@@ -146,39 +147,25 @@ class MLP_NeuralNetwork(object):
 
 
 
-# The method below compute the vector for the director/actor
-def getVector(pos, t, nb_actors, nb_directors):
-    length = nb_actors + nb_directors
-    vector = np.zeros(length)
-
-    if t != "actor":
-        vector[pos + nb_actors] = 1
-    else:
-        vector[pos] = 1
-
-
-    return vector
-
-def get_data(data, nbD, nbA):
+def get_data(data):
     patterns = []
     for movie in data:
 
         x = []
         y = []
-        x.append(getVector(int(movie[4]), "director", nbA, nbD))
-        x.append(getVector(int(movie[5]), "actor", nbA, nbD))
-        x.append(getVector(int(movie[6]), "actor", nbA, nbD))
-        x.append(getVector(int(movie[7]), "actor", nbA, nbD))
-        y.append(float(movie[8]))
+        x.append(int(movie[5]))
+        x.append(int(movie[6]))
+        x.append(int(movie[7]))
+        x.append(int(movie[8]))
+        y.append(float(movie[4]))
         patterns.append([x, y])
 
     return patterns
 
-
-reader = rd.CSVReader()
-data, nbD, nbA = reader.read("../cleaned_data.csv")
-print(nbD)
-print(nbA)
-patterns = get_data(data, nbD, nbA)
-mlp = MLP_NeuralNetwork(nbD+nbA, 1, 1)
+patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
+#reader = rd.CSVReader()
+#data, nbD, nbA = reader.read("../cleaned_data.csv")
+#patterns = get_data(data)
+mlp = MLP_NeuralNetwork(4, 2, 1)
 mlp.train(patterns)
+mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
