@@ -13,7 +13,7 @@ def sigmoid(x):
 def derivate_sigmoid(y):
     return y * (1.0 - y)
 
-
+# Multi Layer Perceptron
 class MLP_NeuralNetwork(object):
 
     def __init__(self, input, hidden, output):
@@ -166,3 +166,4 @@ reader = rd.CSVReader()
 data, nbD, nbA = reader.read("../cleaned_data.csv")
 get_data(data, nbD, nbA)
 mlp = MLP_NeuralNetwork(2, 1, 1)
+
