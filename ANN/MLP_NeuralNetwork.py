@@ -1,9 +1,5 @@
-import csv
-import random
 import Persistence.Reader as rd
 import numpy as np
-import math
-from sklearn.datasets import load_iris
 
 
 def sigmoid(x):
@@ -34,10 +30,8 @@ class MLP_NeuralNetwork(object):
         # Create randomized weights
         self.weights_input = np.random.randn(self.input, self.hidden)
         self.weights_output = np.random.randn(self.input, self.hidden)
-        print(str(len(self.weights_output)))
 
         # Create arrays of 0 for changes
-
         self.changes_input = np.zeros((self.input, self.hidden))
         self.changes_output = np.zeros((self.hidden, self.output))
 
@@ -63,7 +57,7 @@ class MLP_NeuralNetwork(object):
                 sum += self.array_hidden[j] * self.weights_output[j][k]
             self.array_outputs[k] = sigmoid(sum)
 
-        return self.array_hidden[:]
+        return self.array_outputs[:]
 
 
     def backPropagate(self, targets, N):
@@ -137,8 +131,8 @@ class MLP_NeuralNetwork(object):
         """
         predictions = []
         for p in X:
-            predictions.append(self.feedForward(p))
-
+            predictions.append(self.feedForward(p[0]))
+        print("Predict: " + str(predictions))
         return predictions
 
     def test(self, patterns):
@@ -152,21 +146,26 @@ def get_data(data):
     for movie in data:
         x = []
         y = []
-        x.append(int(movie[5]))
-        x.append(int(movie[6]))
-        x.append(int(movie[7]))
-        x.append(int(movie[8]))
+        x.append(float(movie[5]))
+        x.append(float(movie[6]))
+        x.append(float(movie[7]))
+        x.append(float(movie[8]))
         y.append(float(movie[4]))
         patterns.append([x, y])
     return patterns
 
-#patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
-reader = rd.CSVReader()
-#data = reader.read("../cleaned_data.csv")
-data = reader.read("../cleaned_data.csv")
-patterns = get_data(data)
 
+reader = rd.CSVReader()
+#patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
+#data = reader.read("../cleaned_data.csv")
+# mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
+
+
+data = reader.normalize()
+patterns = get_data(data)
+print(patterns)
 
 mlp = MLP_NeuralNetwork(4, 2, 1)
 mlp.train(patterns)
-# mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
+mlp.test(patterns)
+mlp.predict(patterns)
