@@ -27,18 +27,18 @@ class MLP_NeuralNetwork(object):
         self.output = output
 
         # Set up array ofs 1s for activations
-        self.ai = [1.0] * self.input
-        self.ah = [1.0] * self.hidden
-        self.ao = [1.0] * self.output
+        self.array_inputs = [1.0] * self.input
+        self.array_hidden = [1.0] * self.hidden
+        self.array_outputs = [1.0] * self.output
 
         # Create randomized weights
-        self.wi = np.random.randn(self.input, self.hidden)
-        self.wo = np.random.randn(self.input, self.hidden)
+        self.weights_input = np.random.randn(self.input, self.hidden)
+        self.weights_output = np.random.randn(self.input, self.hidden)
 
         # Create arrays of 0 for changes
 
-        self.ci = np.zeros((self.input, self.hidden))
-        self.co = np.zeros((self.hidden, self.output))
+        self.changes_input = np.zeros((self.input, self.hidden))
+        self.changes_output = np.zeros((self.hidden, self.output))
 
     def feedForward(self, inputs):
         if len(inputs) != self.input - 1:
@@ -46,23 +46,23 @@ class MLP_NeuralNetwork(object):
 
         # Input activations
         for i in range(self.input - 1): # - 1 is to avoid the bias
-            self.ai[i] = inputs[i]
+            self.array_inputs[i] = inputs[i]
 
         # Hidden activations
         for j in range(self.hidden):
             sum = 0.0
             for i in range(self.input):
-                sum += self.ai[i] * self.wi[i][j]
-            self.ah[j] = sigmoid(sum)
+                sum += self.array_inputs[i] * self.weights_input[i][j]
+            self.array_hidden[j] = sigmoid(sum)
 
         # Output activations
         for k in range(self.output):
             sum = 0.0
             for j in range(self.hidden):
-                sum += self.ah[j] * self.wo[j][k]
-            self.ao[k] = sigmoid(sum)
+                sum += self.array_hidden[j] * self.weights_output[j][k]
+            self.array_outputs[k] = sigmoid(sum)
 
-        return self.ah[:]
+        return self.array_hidden[:]
 
 
     def backPropagate(self, targets, N):
@@ -80,8 +80,8 @@ class MLP_NeuralNetwork(object):
         output_deltas = [0.0] * self.output
 
         for k in range(self.output):
-            error = -(targets[k] - self.ao[k])
-            output_deltas[k] = derivate_sigmoid(self.ao[k]) * error
+            error = -(targets[k] - self.array_outputs[k])
+            output_deltas[k] = derivate_sigmoid(self.array_outputs[k]) * error
 
         # Calculate terms for hidden
         # Delta tells you which direction to change your weights
@@ -91,28 +91,28 @@ class MLP_NeuralNetwork(object):
         for j in range(self.hidden):
             error = 0.0
             for k in range(self.output):
-                error += output_deltas[k] * self.wo[j][k]
-            hidden_deltas[j] = derivate_sigmoid(self.ah[j]) * error
+                error += output_deltas[k] * self.weights_output[j][k]
+            hidden_deltas[j] = derivate_sigmoid(self.array_hidden[j]) * error
 
         # Update the weights connecting hidden to output
 
         for j in range(self.hidden):
             for k in range(self.output):
-                change = output_deltas[k] * self.ah[j]
-                self.wo[j][k] -= N * change + self.co[j][k]
-                self.co[j][k] = change
+                change = output_deltas[k] * self.array_hidden[j]
+                self.weights_output[j][k] -= N * change + self.changes_output[j][k]
+                self.changes_output[j][k] = change
 
         # Update the weights connecting input to hidden
         for i in range(self.input):
             for j in range(self.hidden):
-                change = hidden_deltas[j] * self.ai[i]
-                self.wi[i][j] -= N * change + self.ci[i][j]
-                self.ci[i][j] = change
+                change = hidden_deltas[j] * self.array_inputs[i]
+                self.weights_input[i][j] -= N * change + self.changes_input[i][j]
+                self.changes_input[i][j] = change
 
         # Calcuate error
         error = 0.0
         for k in range(len(targets)):
-            error += 0.5 * (targets[k] - self.ao[k]) ** 2
+            error += 0.5 * (targets[k] - self.array_outputs[k]) ** 2
         return error
 
 
@@ -144,6 +144,8 @@ class MLP_NeuralNetwork(object):
         for p in patterns:
             print(p[1], '->', self.feedForward(p[0]))
 
+
+
 # The method below compute the vector for the director/actor
 def getVector(pos, t, nb_actors, nb_directors):
     length = nb_actors + nb_directors
@@ -173,7 +175,6 @@ def get_data(data, nbD, nbA):
     return patterns
 
 
-
 reader = rd.CSVReader()
 data, nbD, nbA = reader.read("../cleaned_data.csv")
 print(nbD)
@@ -181,4 +182,3 @@ print(nbA)
 patterns = get_data(data, nbD, nbA)
 mlp = MLP_NeuralNetwork(nbD+nbA, 1, 1)
 mlp.train(patterns)
-
