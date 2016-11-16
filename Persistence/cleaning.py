@@ -56,9 +56,9 @@ print ("\tDuplicates found : " + str(duplicate_rows) + ".")
 print ("Saving cleaned data... (into cleaned_data.csv)")
 
 # writing cleaned data into new CSV
-with open('cleaned_data.csv', 'w', encoding="utf8") as newfile:
+with open('cleaned_data.csv', 'w', newline='') as newfile:
     writer = csv.writer(newfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(['Director', 'Actor1', 'Actor2', 'Actor3', 'Rating'])
+    writer.writerow(['Director', 'Actor1', 'Actor2', 'Actor3', 'Rating', "DirectorLikes", "Actor1Likes", "Actor2Likes", "Actor3Likes"])
     
     for k in range(0, len(directors)):
         if k not in duplicates:
