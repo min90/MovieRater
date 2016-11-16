@@ -154,16 +154,25 @@ def getVector(pos, t, nb_actors, nb_directors):
     return vector
 
 def get_data(data, nbD, nbA):
+    patterns = []
     for movie in data:
-        movie[4] = getVector(movie[4], "director", nbA, nbD)
-        movie[5] = getVector(movie[5], "actor", nbA, nbD)
-        movie[6] = getVector(movie[6], "actor", nbA, nbD)
-        movie[7] = getVector(movie[7], "actor", nbA, nbD)
-    print(data)
+
+        x = []
+        y = []
+        x.append(getVector(int(movie[4]), "director", nbA, nbD))
+        x.append(getVector(int(movie[5]), "actor", nbA, nbD))
+        x.append(getVector(int(movie[6]), "actor", nbA, nbD))
+        x.append(getVector(int(movie[7]), "actor", nbA, nbD))
+        y.append(float(movie[8]))
+        patterns.append([x, y])
+
+    return patterns
+
 
 
 reader = rd.CSVReader()
 data, nbD, nbA = reader.read("../cleaned_data.csv")
-get_data(data, nbD, nbA)
-mlp = MLP_NeuralNetwork(2, 1, 1)
+patterns = get_data(data, nbD, nbA)
+mlp = MLP_NeuralNetwork(4, 1, 1)
+mlp.train(patterns)
 
