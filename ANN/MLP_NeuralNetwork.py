@@ -1,7 +1,8 @@
 import csv
 import random
-
+import Persistence.Reader as rd
 import numpy as np
+import math
 from sklearn.datasets import load_iris
 
 
@@ -143,63 +144,25 @@ class MLP_NeuralNetwork(object):
         for p in patterns:
             print(p[1], '->', self.feedForward(p[0]))
 
+# The method below compute the vector for the director/actor
+def getVector(pos, t, nb_actors, nb_directors):
+    length = nb_actors if (t == "actor") else nb_directors
+    vector = np.zeros(length)
 
-# JUST FOR TESTING
-def loadDataSet(filename, split, trainingSet=[], testSet=[]):
-    num = 0
-    with open(filename, 'r') as f:
-        lines = csv.reader(f)
-        dataset = list(lines)
-        for x in range(len(dataset) - 1):
-            if num == 0:
-                header = x
-            else:
-                for y in range(4):
-                    dataset[x][y] = float(dataset[x][y])
-                if random.random() < split:
-                    trainingSet.append(dataset[x])
-                else:
-                    testSet.append(dataset[x])
-            num += 1
+    vector[pos] = 1
 
-def getXYNormalizedValues(set):
-    xvalues = []
-    yValues = []
-    for x in set:
-        xvalues.append(x[1])
-        yValues.append(x[2])
-    normalizedX = normalizeData(xvalues)
-    normalizedY = normalizeData(yValues)
+    return vector
 
-    for index, itemX in enumerate(normalizedX):
-        set[index][1] = itemX
-    for index, itemY in enumerate(normalizedY):
-        set[index][2] = itemY
-    return set
+def get_data(data, nbD, nbA):
+    for movie in data:
+        movie[4] = getVector(movie[4], "director", nbA, nbD)
+        movie[5] = getVector(movie[5], "actor", nbA, nbD)
+        movie[6] = getVector(movie[6], "actor", nbA, nbD)
+        movie[7] = getVector(movie[7], "actor", nbA, nbD)
+    print(data)
 
 
-# To normalize data, we have too first do min-max on x values and then on y values.
-# Max(point) = den største x værdi i sættet / Samme med y
-# Min(point) = den mindste x værdi i sættet / Samme med y
-
-def normalizeData(points):
-    """Param: point (List) of values"""
-    normalized = []
-    for p in points:
-        xnew = ((p - min(points))/(max(points) - min(points)))
-        normalized.append(xnew)
-    return normalized
-
-def main():
-    trainingSet = []
-    testSet = []
-    split = 0.66
-    loadDataSet("iris.csv", split, trainingSet, testSet)
-    training = getXYNormalizedValues(trainingSet)
-    test = getXYNormalizedValues(testSet)
-    print(training)
-    return training, test
-
-
+reader = rd.CSVReader()
+data, nbD, nbA = reader.read("../cleaned_data.csv")
+get_data(data, nbD, nbA)
 mlp = MLP_NeuralNetwork(2, 1, 1)
-training, test = main()
