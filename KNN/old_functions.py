@@ -8,8 +8,7 @@ from collections import Counter
 
 
 class Knn:
-
-    def __init__ (self):
+    def __init__(self):
         reader = rd.CSVReader
         self.data, self.nb_directors, self.nb_actors = reader.read("../cleaned_data.csv")
 
@@ -48,6 +47,7 @@ class Knn:
             else:
                 test_set.append(data[x])
         return training_set, test_set
+
     # Not in use
     def getRangeAccuracy(self, test_point, predictions):
         upper_limit = float(test_point[8]) + 0.5
@@ -79,3 +79,14 @@ class Knn:
         votes = Counter(imdb_classes)
         winner, _ = votes.most_common(1)[0]
         return winner
+
+    def test(self):
+        print("directors : " + str(self.nb_directors))
+        print("actors : " + str(self.nb_actors))
+        print(self.getVector(2, "actor"))
+        print(self.data[0][6])
+        print(self.getting_actor("Clint Eastwood"))
+        print(self.getting_director("Clint Eastwood"))
+
+knn = Knn()
+knn.test()
