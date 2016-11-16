@@ -150,7 +150,6 @@ class MLP_NeuralNetwork(object):
 def get_data(data):
     patterns = []
     for movie in data:
-
         x = []
         y = []
         x.append(int(movie[5]))
@@ -159,13 +158,15 @@ def get_data(data):
         x.append(int(movie[8]))
         y.append(float(movie[4]))
         patterns.append([x, y])
-
     return patterns
 
-patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
-#reader = rd.CSVReader()
-#data, nbD, nbA = reader.read("../cleaned_data.csv")
-#patterns = get_data(data)
+#patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
+reader = rd.CSVReader()
+#data = reader.read("../cleaned_data.csv")
+data = reader.read("../cleaned_data.csv")
+patterns = get_data(data)
+
+
 mlp = MLP_NeuralNetwork(4, 2, 1)
 mlp.train(patterns)
-mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
+# mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
