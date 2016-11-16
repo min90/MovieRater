@@ -6,9 +6,11 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-def dot(v, w):
-    #return sum(v_i * w_i for v_i, w_i in zip(v, w))
-    return np.dot(v, w)
+def dot(K, L):
+    if len(K) != len(L):
+      return 0
+
+    return sum(i[0] * i[1] for i in zip(K, L))
 
 def step_function(x):
     return 1 if x >= 0 else 0
@@ -18,19 +20,15 @@ def perceptron_output(weights, bias, x):
     return step_function(dot(weights, x) + bias)
 
 def sigmoid(t):
+    print(t)
     return 1 / (1 + math.exp(-t))
 
 def neuron_output(weights, inputs):
-    weights = np.array(weights)
-    inputs = np.array(inputs)
-    print(weights)
-    print(inputs)
     return sigmoid(dot(weights, inputs))
 
 def feed_forward(neural_network, input_vector):
     """takes in a neural network (represented as a list of lists of lists of weights)
     and returns the output from forward-propagating the input"""
-
     outputs = []
 
     for layer in neural_network:
@@ -52,8 +50,6 @@ def backpropagate(network, input_vector, target):
     # the output * (1 - output) is from the derivative of sigmoid
     output_deltas = [output * (1 - output) * (output - target[i])
                      for i, output in enumerate(outputs)]
-
-    output_deltas = np.array(output_deltas)
 
     # adjust weights for output layer (network[-1])
     for i, output_neuron in enumerate(network[-1]):
@@ -107,12 +103,12 @@ if __name__ == "__main__":
     ############################################################################
     # The method below compute the vector for the director/actor
     def getVector(pos, t, nb_actors, nb_directors):
-        length = nb_actors if (t == "actor") else nb_directors
+        length = nb_actors
         vector = np.zeros(length)
 
         vector[pos] = 1
 
-        return np.array(vector)
+        return vector
 
 
     def get_data(data, nbD, nbA):
@@ -127,8 +123,8 @@ if __name__ == "__main__":
             x.append(getVector(int(movie[7]), "actor", nbA, nbD))
             y.append(float(movie[8]))
 
-            inputs.append(np.array(x))
-            targets.append(np.array(y))
+            inputs.append(x)
+            targets.append(y)
 
         return inputs, targets
 
@@ -146,9 +142,9 @@ if __name__ == "__main__":
     #print(targets)
 
     random.seed(0)   # to get repeatable results
-    input_size = 25  # each input is a vector of length 25
-    num_hidden = 5   # we'll have 5 neurons in the hidden layer
-    output_size = 10 # we need 10 outputs for each input
+    input_size = 4  # each input is a vector of length 25
+    num_hidden = 10   # we'll have 5 neurons in the hidden layer
+    output_size = 1  # we need 10 outputs for each input
 
     # each hidden neuron has one weight per input, plus a bias weight
     hidden_layer = [[random.random() for __ in range(input_size + 1)]
@@ -160,6 +156,7 @@ if __name__ == "__main__":
 
     # the network starts out with random weights
     network = [hidden_layer, output_layer]
+
 
     # 10,000 iterations seems enough to converge
     for __ in range(10000):

@@ -146,10 +146,14 @@ class MLP_NeuralNetwork(object):
 
 # The method below compute the vector for the director/actor
 def getVector(pos, t, nb_actors, nb_directors):
-    length = nb_actors if (t == "actor") else nb_directors
+    length = nb_actors + nb_directors
     vector = np.zeros(length)
 
-    vector[pos] = 1
+    if t != "actor":
+        vector[pos + nb_actors] = 1
+    else:
+        vector[pos] = 1
+
 
     return vector
 
@@ -172,7 +176,9 @@ def get_data(data, nbD, nbA):
 
 reader = rd.CSVReader()
 data, nbD, nbA = reader.read("../cleaned_data.csv")
+print(nbD)
+print(nbA)
 patterns = get_data(data, nbD, nbA)
-mlp = MLP_NeuralNetwork(4, 1, 1)
+mlp = MLP_NeuralNetwork(nbD+nbA, 1, 1)
 mlp.train(patterns)
 

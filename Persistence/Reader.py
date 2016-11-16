@@ -22,6 +22,7 @@ class CSVReader:
                     id_2 = int(row[6])
                     id_3 = int(row[7])
 
+
                     if id_dir > nb_directors:
                         nb_directors = id_dir
                     if max(id_1, id_2, id_3) > nb_actors:
