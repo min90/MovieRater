@@ -192,10 +192,11 @@ if performManualPCA == True:
 
     mean_vector = np.array( [ [mean_dir], [mean_act1], [mean_act2], [mean_act3] ] )
 
-    print('DirectorLikes :\tMin: ' + str(np.min(Dataset[:, 0])) + '\tMax: ' + str(np.max(Dataset[:, 0])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 0])) + '\tMean: ' + str(mean_dir))
-    print('Actor-1-Likes :\tMin: ' + str(np.min(Dataset[:, 1])) + '\tMax: ' + str(np.max(Dataset[:, 1])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 1])) + '\tMean: ' + str(mean_act1))
-    print('Actor-2-Likes :\tMin: ' + str(np.min(Dataset[:, 2])) + '\tMax: ' + str(np.max(Dataset[:, 2])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 2])) + '\tMean: ' + str(mean_act2))
-    print('Actor-3-Likes :\tMin: ' + str(np.min(Dataset[:, 3])) + '\tMax: ' + str(np.max(Dataset[:, 3])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 3])) + '\tMean: ' + str(mean_act3))
+    print('DirectorLikes: \tMin: ' + str(np.min(Dataset[:, 0])) + '\tMax: ' + str(np.max(Dataset[:, 0])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 0])) + '\tMean: ' + str(mean_dir))
+    print('Actor-1-Likes: \tMin: ' + str(np.min(Dataset[:, 1])) + '\tMax: ' + str(np.max(Dataset[:, 1])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 1])) + '\tMean: ' + str(mean_act1))
+    print('Actor-2-Likes: \tMin: ' + str(np.min(Dataset[:, 2])) + '\tMax: ' + str(np.max(Dataset[:, 2])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 2])) + '\tMean: ' + str(mean_act2))
+    print('Actor-3-Likes: \tMin: ' + str(np.min(Dataset[:, 3])) + '\tMax: ' + str(np.max(Dataset[:, 3])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 3])) + '\tMean: ' + str(mean_act3))
+    print('Mean vector generated.')
 
     # ===============================================
     # Computing the Scatter Matrix
