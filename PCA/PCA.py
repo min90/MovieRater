@@ -11,13 +11,13 @@ from matplotlib.mlab import PCA as mlabPCA
 ###############################################################################
 
 # PCA with SKLearn library
-performSKLearnPCA = True
+performSKLearnPCA = False
 
 # PCA with MLAB library
 performMlabPCA = False
 
 # Manual PCA
-performManualPCA = False
+performManualPCA = True
 
 ###############################################################################
 ###
@@ -26,7 +26,7 @@ performManualPCA = False
 ###############################################################################
 
 reader = rd.CSVReader
-data, nb_directors, nb_actors = reader.read("../cleaned_data.csv")
+data = reader.read("../cleaned_data.csv")
 nRows = len(data)
 
 ###############################################################################
@@ -35,31 +35,16 @@ nRows = len(data)
 ###
 ###############################################################################
 
-# get the vector for an actor
-def actorVector(pos):
-    return int(pos) # temporary
-
-    vector = np.zeros(nb_actors)
-    vector[int(pos)] = 1
-    return vector
-
-# get the vector for a director
-def directorVector(pos):
-    return int(pos) # temporary
-
-    vector = np.zeros(nb_directors)
-    vector[int(pos)] = 1
-    return vector
-
 Dataset = []
 
 # create the dataset used for PCA
 for i in range(0, nRows):
-    dir = directorVector(data[i][4])
-    act1 = actorVector(data[i][5])
-    act2 = actorVector(data[i][6])
-    act3 = actorVector(data[i][7])
-    row = [dir, act1, act2, act3, float(data[i][8])]
+    dirLikes = int(data[i][5])
+    act1Likes = int(data[i][6])
+    act2Likes = int(data[i][7])
+    act3Likes = int(data[i][8])
+    #rating = float(data[i][4])
+    row = [dirLikes, act1Likes, act2Likes, act3Likes]
     Dataset.append(row)
 
 Dataset = np.array(Dataset)
@@ -203,11 +188,14 @@ if performManualPCA == True:
     mean_act1 = np.mean(Dataset[:, 1])
     mean_act2 = np.mean(Dataset[:, 2])
     mean_act3 = np.mean(Dataset[:, 3])
-    mean_rating = np.mean(Dataset[:, 4])
+    #mean_rating = np.mean(Dataset[:, 4])
 
-    mean_vector = np.array( [ [mean_dir], [mean_act1], [mean_act2], [mean_act3], [mean_rating] ] )
+    mean_vector = np.array( [ [mean_dir], [mean_act1], [mean_act2], [mean_act3] ] )
 
-    print('Mean Vector :\n', mean_vector)
+    print('DirectorLikes :\tMin: ' + str(np.min(Dataset[:, 0])) + '\tMax: ' + str(np.max(Dataset[:, 0])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 0])) + '\tMean: ' + str(mean_dir))
+    print('Actor-1-Likes :\tMin: ' + str(np.min(Dataset[:, 1])) + '\tMax: ' + str(np.max(Dataset[:, 1])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 1])) + '\tMean: ' + str(mean_act1))
+    print('Actor-2-Likes :\tMin: ' + str(np.min(Dataset[:, 2])) + '\tMax: ' + str(np.max(Dataset[:, 2])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 2])) + '\tMean: ' + str(mean_act2))
+    print('Actor-3-Likes :\tMin: ' + str(np.min(Dataset[:, 3])) + '\tMax: ' + str(np.max(Dataset[:, 3])) + '\tStandard deviation: ' + str(np.std(Dataset[:, 3])) + '\tMean: ' + str(mean_act3))
 
     # ===============================================
     # Computing the Scatter Matrix

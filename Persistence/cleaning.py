@@ -62,7 +62,7 @@ with open('cleaned_data.csv', 'w', newline='') as newfile:
     
     for k in range(0, len(directors)):
         if k not in duplicates:
-            if facebook_director[k] != "0" and facebook_actor1 != "0" and facebook_actor2 != "0" and facebook_actor3 != "0":
+            if facebook_director[k] != "0" and facebook_actor1[k] != "0" and facebook_actor2[k] != "0" and facebook_actor3[k] != "0":
                 writer.writerow([directors[k], actors1[k], actors2[k], actors3[k], ratings[k], facebook_director[k], facebook_actor1[k], facebook_actor2[k], facebook_actor3[k]])
                 final_rows += 1
 
