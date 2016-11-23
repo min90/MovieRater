@@ -2,14 +2,9 @@ import Persistence.Reader as rd
 import matplotlib.pyplot as plt
 import operator
 import random
-
+import math
 
 class Knn:
-
-    # Constructor
-    def __init__ (self):
-        reader = rd.CSVReader
-        self.data = reader.read("../cleaned_data.csv")
 
     # We divide the dataset in training and test sets
     def dividing_set(self, data, split):
@@ -27,6 +22,12 @@ class Knn:
                 test_set.append(data[x])
         return training_set, test_set
 
+    def euclideanDistance(self, instance1, instance2, length):
+        distance = 0
+        for x in range(length):
+            distance += pow((instance1[x] - instance2[x]), 2)
+        return math.sqrt(distance)
+
     # Get the euclidian distance between two points
     def getDistance(self, trainingSetPoint, pointToTest):
         """
@@ -34,11 +35,9 @@ class Knn:
         :param pointToTest: point we want to compare with
         :return: distance between the 2 points
         """
-        dir_distance = 1 if (trainingSetPoint[4] != pointToTest[4]) else 0
-        actor1_distance = 1 if (trainingSetPoint[5] != pointToTest[5]) else 0
-        actor2_distance = 1 if (trainingSetPoint[6] != pointToTest[6]) else 0
-        actor3_distance = 1 if (trainingSetPoint[7] != pointToTest[7]) else 0
-        return (dir_distance + actor1_distance + actor2_distance + actor3_distance)
+        point1 = [trainingSetPoint[5], trainingSetPoint[6], trainingSetPoint[7], trainingSetPoint[8]]
+        point2 = [pointToTest[5], pointToTest[6], pointToTest[7], pointToTest[8]]
+        return self.euclideanDistance(point1, point2, 4)
 
     # Get the point's neighbors
     def getNeighbors(self, training_set, test_point, k):
@@ -75,7 +74,7 @@ class Knn:
 
         for neighbor in neighbors:
             distance = self.getDistance(neighbor, point)
-            sum_weighted_scores += (float(neighbor[8]) * distance)
+            sum_weighted_scores += (float(neighbor[4]) * distance)
             sum_distances += distance
         if sum_distances != 0:
             return sum_weighted_scores / sum_distances
@@ -98,23 +97,21 @@ class Knn:
     # testing
     def test(self):
         # training_data, test_data = self.dividing_set(self.data, 0.67)
-        k = 20
-        i = 5
-
+        k = 30
+        i = 4
+        reader = rd.CSVReader()
         # Loop for multiple k
         x, y = [], []
+        data = reader.normalize()
         for l in range(1, k):
             total_accuracy = 0
             # Loop i times to make sure it is not just a random result
             for j in range(0, i):
-                training_data, test_data = self.dividing_set(self.data, 0.70)
-                print(training_data)
+                training_data, test_data = self.dividing_set(data, 0.7)
                 accuracy = 0
                 for point in test_data:
-                    # print("Predicting point: " + point[0] + ", " + point[1] + ", " + point[2], ", " + point[3] + "...")
                     avg_weighted_rating = self.average_neighbors_imdb_rating(self.getNeighbors(training_data, point, l), point)
-                    accuracy += self.getAccuracy(float(point[8]), avg_weighted_rating)
-                    # print("Predicted class = " + str(avg_weighted_rating) + "      actual = " + point[8] + "       accuracy = " + str(self.getAccuracy(float(point[8]), avg_weighted_rating)))
+                    accuracy += self.getAccuracy(float(point[4]), avg_weighted_rating)
                 total_accuracy += accuracy/len(test_data)
                 print("Try number: " + str(j+1) + " k = " + str(l) + ": average precision: " + str(accuracy/len(test_data)))
 

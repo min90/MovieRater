@@ -156,10 +156,6 @@ def get_data(data):
 
 
 reader = rd.CSVReader()
-#patterns = [[[10,100,400,0],[6.0]], [[105,10,400,70],[9.0]], [[10,10000,400,10],[2.0]], [[101,100,4300,0],[8.0]]]
-#data = reader.read("../cleaned_data.csv")
-# mlp.test([[[10,100,400,0],[6.0]], [[105,100,400,70],[9.0]], [[10,1000,400,10],[2.0]], [[10,100,430,0],[8.0]]])
-
 
 data = reader.normalize()
 patterns = get_data(data)
