@@ -73,8 +73,3 @@ class CSVReader:
             xnew = ((p - min(point)) / (max(point) - min(point)))
             normalized.append(xnew)
         return normalized
-
-
-
-reader = CSVReader()
-reader.normalize()
