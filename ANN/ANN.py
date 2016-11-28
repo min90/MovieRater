@@ -111,27 +111,23 @@ if __name__ == "__main__":
         return vector
 
 
-    def get_data(data, nbD, nbA):
-        inputs = []
-        targets = []
+    def get_data(data):
+        patterns = []
         for movie in data:
             x = []
             y = []
-            x.append(getVector(int(movie[4]), "director", nbA, nbD))
-            x.append(getVector(int(movie[5]), "actor", nbA, nbD))
-            x.append(getVector(int(movie[6]), "actor", nbA, nbD))
-            x.append(getVector(int(movie[7]), "actor", nbA, nbD))
-            y.append(float(movie[8]))
-
-            inputs.append(x)
-            targets.append(y)
-
-        return inputs, targets
+            x.append(float(movie[5]))
+            x.append(float(movie[6]))
+            x.append(float(movie[7]))
+            x.append(float(movie[8]))
+            y.append(float(movie[4]))
+            patterns.append([x, y])
+        return patterns
 
 
     reader = rd.CSVReader()
-    data, nbD, nbA = reader.read("../cleaned_data.csv")
-    inputs, targets = get_data(data, nbD, nbA)
+    data = reader.read("../cleaned_data.csv")
+    targets = get_data(data)
 
     ##############################################################################
     #

@@ -36,14 +36,12 @@ class CSVReader:
 
     def normalize(self):
         data = self.read("../cleaned_data.csv")
-        print("time")
         likes = []
         for like in data:
             likes.append(like[5])
             likes.append(like[6])
             likes.append(like[7])
             likes.append(like[8])
-        print("time 2")
         l = self.getXYNormalizedValues(likes)
         data_chunks = [l[x:x + 4] for x in range(0, len(l), 4)]
         for idx, ll in enumerate(data_chunks):
@@ -57,9 +55,7 @@ class CSVReader:
         xvalues = []
         for x in set:
             xvalues.append(int(x))
-        print("time 3")
         normalizedX = self.normalizeData(xvalues)
-        print("time 4")
         return normalizedX
 
     # To normalize data, we have too first do min-max on x values and then on y values.
